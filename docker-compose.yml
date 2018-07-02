@@ -4,3 +4,13 @@ services:
   base-image:
     build: .
     image: patarleth/ubuntu-base-development:latest
+  angular-cli:
+    build: angular-cli/.
+    image: patarleth/ubuntu-angular-cli:latest
+    depends_on:
+      - base-image
+  maven:
+    build: maven/.
+    image: patarleth/ubuntu-maven:latest
+    depends_on:
+      - base-image
