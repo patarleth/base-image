@@ -11,4 +11,4 @@ RUN curl -s -o apache-maven-3.5.4-bin.tar.gz http://mirrors.gigenet.com/apache/m
 
 WORKDIR /root/project
 
-ENTRYPOINT [ mvn ]
+ENTRYPOINT [ "/usr/bin/mvn" ]
