@@ -20,7 +20,7 @@ docker run -t -i --rm --entrypoint /bin/bash patarleth/ubuntu-maven -l
 
 ```
 docker-run-bash() {
-    docker run -t -i --rm --entrypoint /bin/bash "$1" -l
+    docker run -t -i --rm -e "TERM=xterm" --entrypoint /bin/bash "$1" -l
 }
 export -f docker-run-bash
 ```
@@ -50,9 +50,9 @@ maven() {
         mavenRepoDir='-v /maven:/maven '
     fi
     if [[ -e "$settings" ]]; then
-      docker run --rm $mavenRepoDir -v "$m2:/root/.m2" -v "$settings:/opt/maven/conf/settings.xml" -v "$p:/root/project" patarleth/ubuntu-maven "$@"
+      docker run -e "TERM=xterm" --rm $mavenRepoDir -v "$m2:/root/.m2" -v "$settings:/opt/maven/conf/settings.xml" -v "$p:/root/project" patarleth/ubuntu-maven "$@"
     else
-      docker run --rm $mavenRepoDir -v "/maven:/maven" -v "$m2:/root/.m2" -v "$p:/root/project" patarleth/ubuntu-maven "$@"
+      docker run -e "TERM=xterm" --rm $mavenRepoDir -v "/maven:/maven" -v "$m2:/root/.m2" -v "$p:/root/project" patarleth/ubuntu-maven "$@"
     fi
 }
 export -f maven
@@ -62,8 +62,15 @@ export -f maven
 ```
 ng-cli() {
     local p=$(pwd)
-    docker run -v "$p:/root/project" patarleth/ubuntu-maven "$@"
+    local args=()
+    
+    args+=($@)
+    if [[ ${#args[@]} -eq 0 ]]; then
+        args+=("help")
+    fi
+    docker run --rm -e "TERM=xterm" -v "$p:/root/project" patarleth/ubuntu-angular-cli --colors=true "${args[@]}"
 }
+ng-cli add --help
 export -f ng-cli
 ```
 
