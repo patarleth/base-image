@@ -70,7 +70,7 @@ ng-cli() {
     fi
     docker run --rm -e "TERM=xterm" -v "$p:/root/project" patarleth/ubuntu-angular-cli --colors=true "${args[@]}"
 }
-ng-cli add --help
+ng-cli config --help
 export -f ng-cli
 ```
 
